@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Blue environment backend
+  - job_name: 'backend-blue'
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    static_configs:
+      - targets: ['host.docker.internal:5000']
+        labels:
+          environment: 'blue'
+
+  # Green environment backend
+  - job_name: 'backend-green'
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    static_configs:
+      - targets: ['host.docker.internal:5001']
+        labels:
+          environment: 'green'
