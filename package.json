@@ -1,0 +1,39 @@
+{
+  "name": "mern-blue-green-deployment",
+  "version": "1.0.0",
+  "description": "GitOps-friendly MERN blue-green deployment framework with health monitoring and rollback automation",
+  "scripts": {
+    "dev:blue": "cd backend/blue && node server.js",
+    "dev:green": "cd backend/green && node server.js",
+    "build:blue": "cd frontend && node scripts/setup-env.js blue && npm run build && if exist build-blue rmdir /s /q build-blue && rename build build-blue",
+    "build:green": "cd frontend && node scripts/setup-env.js green && npm run build && if exist build-green rmdir /s /q build-green && rename build build-green",
+    "deploy:blue": "node deployment/scripts/deploy-controller.js blue",
+    "deploy:green": "node deployment/scripts/deploy-controller.js green",
+    "deploy:switch": "node deployment/scripts/deploy-controller.js switch",
+    "deploy:rollback": "node deployment/scripts/rollback-controller.js",
+    "deploy:status": "node deployment/scripts/status-checker.js",
+    "db:sync": "node database/migrations/migrate-blue-to-green.js",
+    "db:sync:blue-to-green": "node database/migrations/migrate-blue-to-green.js blue green",
+    "db:sync:green-to-blue": "node database/migrations/migrate-blue-to-green.js green blue",
+    "db:fix:blue": "node database/scripts/update-environment-field.js blue mernapp_blue",
+    "db:fix:green": "node database/scripts/update-environment-field.js green mernapp_green",
+    "health:check": "node deployment/scripts/health-monitor.js",
+    "start:monitoring": "node deployment/scripts/rollback-controller.js --monitor",
+    "switch:blue": "node deployment/scripts/switch-env.js blue",
+    "switch:green": "node deployment/scripts/switch-env.js green",
+    "switch:status": "node deployment/scripts/switch-env.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0",
+    "node-fetch": "^2.6.12"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.11"
+  }
+}

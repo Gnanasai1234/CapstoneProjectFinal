@@ -1,0 +1,7 @@
+NODE_ENV=production
+PORT=5001
+APP_ENVIRONMENT=green
+MONGODB_URI=mongodb://localhost:27017/mernapp_green
+SERVICE_NAME=backend-green
+API_VERSION=v1-green
+

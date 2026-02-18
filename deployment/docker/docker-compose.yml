@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: blue-green-nginx
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ../nginx/nginx.docker.conf:/etc/nginx/nginx.conf:rw
+      - ../../frontend/build-blue:/usr/share/nginx/html/build-blue:ro
+      - ../../frontend/build-green:/usr/share/nginx/html/build-green:ro
+    restart: unless-stopped
+    network_mode: "host"
+    # For Windows/Mac, use host.docker.internal instead of network_mode: host
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+
